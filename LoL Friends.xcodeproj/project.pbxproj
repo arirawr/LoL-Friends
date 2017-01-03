@@ -7,17 +7,29 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		023F34541E1AF40400D03874 /* Region.swift in Sources */ = {isa = PBXBuildFile; fileRef = 023F34531E1AF40400D03874 /* Region.swift */; };
+		023F345A1E1B65AD00D03874 /* Key.swift in Sources */ = {isa = PBXBuildFile; fileRef = 023F34591E1B65AD00D03874 /* Key.swift */; };
 		02EF687C1E1A5AF400A9DF6C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02EF687B1E1A5AF400A9DF6C /* AppDelegate.swift */; };
 		02EF687E1E1A5AF400A9DF6C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 02EF687D1E1A5AF400A9DF6C /* Assets.xcassets */; };
 		02EF68811E1A5AF400A9DF6C /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 02EF687F1E1A5AF400A9DF6C /* MainMenu.xib */; };
+		02EF68891E1A5BE000A9DF6C /* RiotDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02EF68881E1A5BE000A9DF6C /* RiotDataController.swift */; };
+		02EF688B1E1A680A00A9DF6C /* FriendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02EF688A1E1A680A00A9DF6C /* FriendViewController.swift */; };
+		02EF688D1E1A73A900A9DF6C /* Summoner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02EF688C1E1A73A900A9DF6C /* Summoner.swift */; };
+		02EF688F1E1A8B9B00A9DF6C /* FriendCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02EF688E1E1A8B9B00A9DF6C /* FriendCellView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		023F34531E1AF40400D03874 /* Region.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Region.swift; sourceTree = "<group>"; };
+		023F34591E1B65AD00D03874 /* Key.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Key.swift; sourceTree = "<group>"; };
 		02EF68781E1A5AF400A9DF6C /* LoL Friends.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "LoL Friends.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		02EF687B1E1A5AF400A9DF6C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		02EF687D1E1A5AF400A9DF6C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		02EF68801E1A5AF400A9DF6C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		02EF68821E1A5AF400A9DF6C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		02EF68881E1A5BE000A9DF6C /* RiotDataController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RiotDataController.swift; sourceTree = "<group>"; };
+		02EF688A1E1A680A00A9DF6C /* FriendViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendViewController.swift; sourceTree = "<group>"; };
+		02EF688C1E1A73A900A9DF6C /* Summoner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Summoner.swift; sourceTree = "<group>"; };
+		02EF688E1E1A8B9B00A9DF6C /* FriendCellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendCellView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -31,6 +43,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		023F345B1E1B663D00D03874 /* Objects */ = {
+			isa = PBXGroup;
+			children = (
+				02EF688C1E1A73A900A9DF6C /* Summoner.swift */,
+				023F34531E1AF40400D03874 /* Region.swift */,
+			);
+			name = Objects;
+			sourceTree = "<group>";
+		};
 		02EF686F1E1A5AF400A9DF6C = {
 			isa = PBXGroup;
 			children = (
@@ -51,8 +72,13 @@
 			isa = PBXGroup;
 			children = (
 				02EF687B1E1A5AF400A9DF6C /* AppDelegate.swift */,
+				02EF68881E1A5BE000A9DF6C /* RiotDataController.swift */,
+				023F345B1E1B663D00D03874 /* Objects */,
+				023F34591E1B65AD00D03874 /* Key.swift */,
 				02EF687D1E1A5AF400A9DF6C /* Assets.xcassets */,
 				02EF687F1E1A5AF400A9DF6C /* MainMenu.xib */,
+				02EF688E1E1A8B9B00A9DF6C /* FriendCellView.swift */,
+				02EF688A1E1A680A00A9DF6C /* FriendViewController.swift */,
 				02EF68821E1A5AF400A9DF6C /* Info.plist */,
 			);
 			path = "LoL Friends";
@@ -129,7 +155,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				023F345A1E1B65AD00D03874 /* Key.swift in Sources */,
+				02EF688B1E1A680A00A9DF6C /* FriendViewController.swift in Sources */,
 				02EF687C1E1A5AF400A9DF6C /* AppDelegate.swift in Sources */,
+				02EF68891E1A5BE000A9DF6C /* RiotDataController.swift in Sources */,
+				023F34541E1AF40400D03874 /* Region.swift in Sources */,
+				02EF688F1E1A8B9B00A9DF6C /* FriendCellView.swift in Sources */,
+				02EF688D1E1A73A900A9DF6C /* Summoner.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -244,6 +276,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = "LoL Friends/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				PRODUCT_BUNDLE_IDENTIFIER = "digital.citron.LoL-Friends";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
@@ -257,6 +290,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = "LoL Friends/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				PRODUCT_BUNDLE_IDENTIFIER = "digital.citron.LoL-Friends";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
@@ -282,6 +316,7 @@
 				02EF68871E1A5AF400A9DF6C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
