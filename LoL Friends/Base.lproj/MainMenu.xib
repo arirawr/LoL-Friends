@@ -838,6 +838,9 @@
                                     <menuItem title="LAS" id="BoL-LK-I92"/>
                                     <menuItem title="TR" id="ihh-hg-STw"/>
                                     <menuItem title="KR" id="9Ay-9N-5Lj"/>
+                                    <menuItem title="RU" id="DZM-3Y-PIY"/>
+                                    <menuItem title="BR" id="YLh-Kv-x9r"/>
+                                    <menuItem title="PBE" id="wh2-Yc-gxj"/>
                                 </items>
                             </menu>
                         </popUpButtonCell>
@@ -849,11 +852,22 @@
         <customObject id="law-Al-emj" customClass="FriendViewController" customModule="LoL_Friends" customModuleProvider="target">
             <connections>
                 <outlet property="addFriendTextField" destination="Q3e-Me-P9U" id="zpr-ho-Ulh"/>
+                <outlet property="errorMessageTextField" destination="J2v-UN-juJ" id="mLP-zQ-OAl"/>
                 <outlet property="progressIndicator" destination="d8B-Aa-zMz" id="RR5-ZI-M1b"/>
                 <outlet property="regionSelectButton" destination="mql-YR-Xbk" id="D32-nj-cGq"/>
                 <outlet property="tableView" destination="heq-cT-rBh" id="lPB-OC-zFk"/>
                 <outlet property="view" destination="EiT-Mj-1SZ" id="cbN-Jj-zcU"/>
             </connections>
         </customObject>
+        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="J2v-UN-juJ">
+            <rect key="frame" x="0.0" y="0.0" width="220" height="78"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="center" drawsBackground="YES" id="r9E-60-3R7">
+                <font key="font" metaFont="system"/>
+                <color key="textColor" name="alternateSelectedControlTextColor" catalog="System" colorSpace="catalog"/>
+                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.69785423801369861" colorSpace="calibratedRGB"/>
+            </textFieldCell>
+            <point key="canvasLocation" x="-194" y="-45"/>
+        </textField>
     </objects>
 </document>

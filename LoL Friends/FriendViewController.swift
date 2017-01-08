@@ -14,10 +14,13 @@ class FriendViewController: NSViewController, NSTableViewDelegate, NSTableViewDa
     @IBOutlet weak var tableView: NSTableView!
     @IBOutlet weak var progressIndicator: NSProgressIndicator!
     @IBOutlet weak var regionSelectButton: NSPopUpButton!
+    @IBOutlet weak var errorMessageTextField: NSTextField!
     
     var friends = [Summoner]()
     
     var region = RiotDataController.shared.getRegionByCode(code: "")
+    
+    var errorCode = 0
     
     var storedFriendsNames: [String] {
         get {
@@ -27,9 +30,24 @@ class FriendViewController: NSViewController, NSTableViewDelegate, NSTableViewDa
             return [String]()
         }
     }
-
+    
+    var uniqueIds: [String] {
+        get {
+            if let stored = UserDefaults.standard.value(forKey: "uniqueIds") as? [String] {
+                return stored
+            }
+            return [String]()
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        fetchSummonerInfo()
+        // Update summoner info and view every 60 seconds
+        _ = Timer.scheduledTimer(timeInterval: 60, target: self, selector: #selector(timedUpdate), userInfo: nil, repeats: true)
+    }
+    
+    func timedUpdate() {
         fetchSummonerInfo()
     }
     
@@ -38,24 +56,45 @@ class FriendViewController: NSViewController, NSTableViewDelegate, NSTableViewDa
     }
     
     @IBAction func addFriendPress(_ sender: Any) {
-        var friendsArray = storedFriendsNames
         let standardName = addFriendTextField.stringValue.lowercased().replacingOccurrences(of: " ", with: "")
-        guard !friendsArray.contains(standardName) else {
-            return
+        
+        var idArray = uniqueIds
+        
+        setRegion()
+        
+        progressIndicator.startAnimation(self)
+        resetUI()
+        
+        RiotDataController.shared.getSummonerId(summonerName: standardName, region: region!) { data, error in
+            
+            guard data > 0 else {
+                self.displayMessage(message: "Summmoner not found.")
+                return
+            }
+            
+            let uniqueId = (self.region!.code) + ".\(data)"
+            
+            guard !idArray.contains(uniqueId) else {
+                return
+            }
+            
+            idArray.append(uniqueId)
+            UserDefaults.standard.set(idArray, forKey: "uniqueIds")
+            self.fetchSummonerInfo()
         }
-        friendsArray.append(standardName)
-        UserDefaults.standard.set(friendsArray, forKey: "friends")
-        fetchSummonerInfo()
+        
+        addFriendTextField.stringValue = ""
+        
     }
     
     @IBAction func removeFriendPress(_ sender: Any) {
         let index = (sender as! NSButton).tag
-        var friendsArray = storedFriendsNames
-        let name = friends[index].getStandardName()
-        friendsArray = friendsArray.filter{$0 != name}
+        var idArray = uniqueIds
+        let idToRemove = friends[index].getUniqueId()
+        idArray = idArray.filter{$0 != idToRemove}
         
-        UserDefaults.standard.set(friendsArray, forKey: "friends")
-
+        UserDefaults.standard.set(idArray, forKey: "uniqueIds")
+        
         fetchSummonerInfo()
     }
     
@@ -83,37 +122,77 @@ class FriendViewController: NSViewController, NSTableViewDelegate, NSTableViewDa
         region = RiotDataController.shared.getRegionByCode(code: selectedRegion!)
     }
     
+    func displayMessage(message: String) {
+        errorMessageTextField.stringValue = message
+        view.addSubview(errorMessageTextField)
+    }
+    
+    func clearMessages() {
+        errorMessageTextField.stringValue = " "
+        errorMessageTextField.removeFromSuperview()
+    }
+    
     func fetchSummonerInfo() {
         progressIndicator.startAnimation(self)
-        setRegion()
-        if !storedFriendsNames.isEmpty {
-            RiotDataController.shared.getSummonerInfo(summonerNames: storedFriendsNames, region: region!) { data, error in
-                if data != nil {
-                    self.friends.removeAll()
-                    for dict in data! {
-                        print(dict.value)
-                        let summoner = Summoner(data: dict.value as! [String : AnyObject], region: self.region!)
-                        RiotDataController.shared.isInGame(summoner: summoner) { data, error in
-                            summoner.updateIsInGame(data: data)
-                            print(summoner.isInGame)
-                            DispatchQueue.main.async {
-                                self.tableView.reloadData()
-                                self.progressIndicator.stopAnimation(self)
-                                
-                            }
-                        }
-                        self.friends.append(summoner)
-                    }
+        
+        //Reset UI
+        friends.removeAll()
+        resetUI()
+        
+        //Loop through stored summoner IDs
+        for uniqueId in uniqueIds {
+            let splitId = uniqueId.components(separatedBy: ".")
+            let summonerRegion = RiotDataController.shared.getRegionByCode(code: splitId[0])
+            let summonerId = Int(splitId[1])
+            
+            //Retreive current summoner data and create a Summoner object
+            RiotDataController.shared.getSummonerInfoById(summonerId: summonerId!, region: summonerRegion!) { data, error in
+                guard error == nil else {
+                    self.errorCode = (error?.code)!
                     DispatchQueue.main.async {
-                        self.tableView.reloadData()
-                        self.progressIndicator.stopAnimation(self)
+                        self.updateUI()
                     }
-                } else {
-                    // handle error
+                    return
                 }
+                let summoner = Summoner(data: (data!.first?.value as! [String : AnyObject]?)!, region: summonerRegion!)
+                
+                //Find if current summoner is in game and update Summoner object
+                RiotDataController.shared.isInGame(summoner: summoner) { data, error in
+                    guard error == nil else {
+                        self.errorCode = (error?.code)!
+                        DispatchQueue.main.async {
+                            self.updateUI()
+                        }
+                        return
+                    }
+                    summoner.updateIsInGame(data: data)
+                    //Add summoner to friends
+                    self.friends.append(summoner)
+                    
+                    DispatchQueue.main.async {
+                        self.updateUI()
+                    }
+                }
+                
             }
         }
     }
     
+    func resetUI() {
+        self.clearMessages()
+        errorCode = 0
+    }
     
+    func updateUI() {
+        tableView.reloadData()
+        progressIndicator.stopAnimation(self)
+        
+        if(self.errorCode == 429) {
+            self.displayMessage(message: "Rate limit reached. Please wait before refreshing.")
+        } else if(self.errorCode == 404) {
+            self.displayMessage(message: "Not found.")
+        } else if(self.errorCode != 0) {
+            self.displayMessage(message: "Error")
+        }
+    }
 }

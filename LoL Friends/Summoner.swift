@@ -33,8 +33,11 @@ class Summoner: NSObject {
         return name.lowercased().replacingOccurrences(of: " ", with: "")
     }
     
+    func getUniqueId() -> String {
+        return region.code + ".\(id)"
+    }
+    
     func updateIsInGame(data: Bool) {
         isInGame = data
     }
-    
 }
