@@ -1,6 +1,6 @@
 //
 //  FriendViewController.swift
-//  LoL Friends
+//  LoL-Friends
 //
 //  Created by Arielle Vaniderstine on 2017-01-02.
 //  Copyright © 2017 Citron Digital. All rights reserved.
@@ -142,11 +142,17 @@ class FriendViewController: NSViewController, NSTableViewDelegate, NSTableViewDa
         //Loop through stored summoner IDs
         for uniqueId in uniqueIds {
             let splitId = uniqueId.components(separatedBy: ".")
-            let summonerRegion = RiotDataController.shared.getRegionByCode(code: splitId[0])
-            let summonerId = Int(splitId[1])
+            guard let summonerRegion = RiotDataController.shared.getRegionByCode(code: splitId[0]) else {
+                print("Unable to get region!")
+                continue
+            }
+            guard splitId.count > 1, let summonerId = Int(splitId[1]) else {
+                print("Unable to get summonerId from unique Id!")
+                continue
+            }
             
             //Retreive current summoner data and create a Summoner object
-            RiotDataController.shared.getSummonerInfoById(summonerId: summonerId!, region: summonerRegion!) { data, error in
+            RiotDataController.shared.getSummonerInfoById(summonerId: summonerId, region: summonerRegion) { data, error in
                 guard error == nil else {
                     self.errorCode = (error?.code)!
                     DispatchQueue.main.async {
@@ -154,7 +160,15 @@ class FriendViewController: NSViewController, NSTableViewDelegate, NSTableViewDa
                     }
                     return
                 }
-                let summoner = Summoner(data: (data!.first?.value as! [String : AnyObject]?)!, region: summonerRegion!)
+                guard let dict = data else {
+                    print("Malformed response!")
+                    return
+                }
+                
+                guard let summoner = Summoner(data: dict, region: summonerRegion) else {
+                    print("Unable to create summoner! Missing values.")
+                    return
+                }
                 
                 //Find if current summoner is in game and update Summoner object
                 RiotDataController.shared.isInGame(summoner: summoner) { data, error in

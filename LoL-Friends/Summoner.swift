@@ -1,6 +1,6 @@
 //
 //  Summoner.swift
-//  LoL Friends
+//  LoL-Friends
 //
 //  Created by Arielle Vaniderstine on 2017-01-02.
 //  Copyright © 2017 Citron Digital. All rights reserved.
@@ -15,9 +15,11 @@ class Summoner: NSObject {
     var region: Region
     var isInGame = Bool()
     
-    init(data: [String : AnyObject], region: Region) {
-        name = data["name"] as! String
-        id = data["id"] as! Int
+    init?(data: [String : Any], region: Region) {
+        guard let name = data["name"] as? String else { return nil }
+        self.name = name
+        guard let id = data["id"] as? Int else { return nil }
+        self.id = id
         self.region = region
         super.init()
     }

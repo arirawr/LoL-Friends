@@ -1,6 +1,6 @@
 //
 //  AppDelegate.swift
-//  LoL Friends
+//  LoL-Friends
 //
 //  Created by Arielle Vaniderstine on 2017-01-02.
 //  Copyright © 2017 Citron Digital. All rights reserved.
